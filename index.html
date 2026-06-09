@@ -31,6 +31,14 @@
           background: #f4f5f8; border-radius: 20px; }
   .note h2 { font-size: 24px; margin: 0 0 8px; }
   .note p { color: #555; margin: 0; }
+  .changelog { max-width: 680px; margin: 80px auto 0; }
+  .changelog h2 { font-size: 24px; text-align: center; margin: 0 0 24px; }
+  .changelog .rel { display: flex; gap: 24px; padding: 18px 0; border-top: 1px solid #e3e3e6; }
+  .changelog .rel:first-of-type { border-top: none; }
+  .changelog .ver { flex: 0 0 84px; font-weight: 600; }
+  .changelog .ver .date { display: block; font-weight: 400; font-size: 13px; color: #86868b; margin-top: 2px; }
+  .changelog .body { color: #444; }
+  @media (max-width: 760px) { .changelog .rel { flex-direction: column; gap: 6px; } }
   footer { text-align: center; margin-top: 64px; color: #86868b; font-size: 15px;
            border-top: 1px solid #e3e3e6; padding-top: 24px; }
   footer a { color: #2997ff; text-decoration: none; margin: 0 8px; }
@@ -48,14 +56,19 @@
   <h1>Glotty</h1>
   <p class="tagline" id="tagline"></p>
   <p class="sub" id="sub"></p>
-  <a class="dl" id="dl" href="Glotty-0.1.0.pkg" download></a>
+  <a class="dl" id="dl" href="Glotty-1.0.pkg" download></a>
   <p class="dlmeta" id="dlmeta"></p>
 </header>
 <main id="features"></main>
+<section class="changelog" id="changelog"></section>
 <footer id="footer"></footer>
 
 <script>
 const FEAT = ["translate","explain","polish","chat"];
+// Version timeline — newest first. Each entry's notes are localized via
+// I18N[lang].changelog[i] (same order). Add a new {v,date} on top each release
+// and prepend a note string to every language's `changelog` array.
+const CHANGELOG = [{ v:"1.0", date:"2026-06-09" }];
 const I18N = {
   "en": { name:"English",
     tagline:"Translate and learn in any app — with one keystroke.",
@@ -67,6 +80,8 @@ const I18N = {
     hud:["One shortcut. Four ways to learn.","Hold Fn to see the menu, then press T, E, P, or C. Glotty appears right where you're working — even over a full-screen app."],
     priv:["Private by design","No account, no ads, no analytics. Bring your own AI key (OpenAI, DeepSeek, Grok, and more) — your text goes straight to the provider you choose, never through our servers."],
     dl:"Download for macOS", dlmeta:"Universal (Apple Silicon & Intel) · macOS 15+ · free",
+    whatsnew:"What's New",
+    changelog:["First public release. Translate, explain, polish, and chat on any text you select — on-device translation, plus Apple Intelligence or your own AI key."],
     support:"Support", privacy:"Privacy Policy" },
 
   "zh-Hans": { name:"简体中文",
@@ -79,6 +94,8 @@ const I18N = {
     hud:["一个快捷键，四种学习方式","按住 Fn 查看菜单，再按 T、E、P 或 C。Glotty 就浮现在你工作的地方——即使在全屏应用之上。"],
     priv:["隐私优先","没有账户、没有广告、没有分析统计。使用你自己的 AI 密钥（OpenAI、DeepSeek、Grok 等）——你的文本直达你选择的服务商，绝不经过我们的服务器。"],
     dl:"下载 macOS 版", dlmeta:"通用（Apple 芯片与 Intel）· macOS 15+ · 免费",
+    whatsnew:"更新内容",
+    changelog:["首次公开发布。对任意选中的文本进行翻译、解释、润色与对话——本机翻译，并支持 Apple Intelligence 或你自己的 AI 密钥。"],
     support:"支持", privacy:"隐私政策" },
 
   "zh-Hant": { name:"繁體中文",
@@ -91,6 +108,8 @@ const I18N = {
     hud:["一個快速鍵，四種學習方式","按住 Fn 查看選單，再按 T、E、P 或 C。Glotty 就浮現在你工作的地方——即使在全螢幕應用程式之上。"],
     priv:["隱私優先","沒有帳戶、沒有廣告、沒有分析統計。使用你自己的 AI 金鑰（OpenAI、DeepSeek、Grok 等）——你的文字直達你選擇的服務商，絕不經過我們的伺服器。"],
     dl:"下載 macOS 版", dlmeta:"通用（Apple 晶片與 Intel）· macOS 15+ · 免費",
+    whatsnew:"更新內容",
+    changelog:["首次公開發布。對任意選取的文字進行翻譯、解釋、潤飾與對話——本機翻譯，並支援 Apple Intelligence 或你自己的 AI 金鑰。"],
     support:"支援", privacy:"隱私權政策" },
 
   "ja": { name:"日本語",
@@ -103,6 +122,8 @@ const I18N = {
     hud:["1 つのショートカット、4 つの学び方","Fn を押すとメニューが出て、T・E・P・C を押すだけ。Glotty は作業中の場所に——全画面アプリの上にも——現れます。"],
     priv:["プライバシー第一","アカウントも広告も分析もなし。自分の AI キー（OpenAI、DeepSeek、Grok など）を使用——テキストは選んだプロバイダへ直接送られ、当方のサーバーを経由しません。"],
     dl:"macOS 版をダウンロード", dlmeta:"ユニバーサル（Apple Silicon・Intel）· macOS 15+ · 無料",
+    whatsnew:"新着情報",
+    changelog:["初の一般公開リリース。選択したテキストを翻訳・解説・推敲・チャット——オンデバイス翻訳に加え、Apple Intelligence または自分の AI キーに対応。"],
     support:"サポート", privacy:"プライバシーポリシー" },
 
   "ko": { name:"한국어",
@@ -115,6 +136,8 @@ const I18N = {
     hud:["단축키 하나, 네 가지 학습","Fn을 누르면 메뉴가 나오고 T·E·P·C를 누르세요. Glotty는 작업 중인 곳에——전체 화면 앱 위에도——나타납니다."],
     priv:["프라이버시 우선","계정도 광고도 분석도 없습니다. 자신의 AI 키(OpenAI, DeepSeek, Grok 등)를 사용하세요——텍스트는 선택한 제공업체로 바로 전송되며 당사 서버를 거치지 않습니다."],
     dl:"macOS용 다운로드", dlmeta:"유니버설(Apple Silicon·Intel) · macOS 15+ · 무료",
+    whatsnew:"새로운 기능",
+    changelog:["첫 정식 출시. 선택한 텍스트를 번역·설명·다듬기·대화 — 온디바이스 번역과 Apple Intelligence 또는 직접 준비한 AI 키 지원."],
     support:"지원", privacy:"개인정보 처리방침" },
 
   "es": { name:"Español",
@@ -127,6 +150,8 @@ const I18N = {
     hud:["Un atajo. Cuatro formas de aprender.","Mantén Fn para ver el menú y pulsa T, E, P o C. Glotty aparece justo donde trabajas — incluso sobre una app a pantalla completa."],
     priv:["Privado por diseño","Sin cuenta, sin anuncios, sin analíticas. Usa tu propia clave de IA (OpenAI, DeepSeek, Grok y más) — tu texto va directo al proveedor que elijas, nunca por nuestros servidores."],
     dl:"Descargar para macOS", dlmeta:"Universal (Apple Silicon e Intel) · macOS 15+ · gratis",
+    whatsnew:"Novedades",
+    changelog:["Primera versión pública. Traduce, explica, pule y chatea sobre cualquier texto seleccionado: traducción en el dispositivo, más Apple Intelligence o tu propia clave de IA."],
     support:"Soporte", privacy:"Política de privacidad" },
 
   "fr": { name:"Français",
@@ -139,6 +164,8 @@ const I18N = {
     hud:["Un raccourci. Quatre façons d'apprendre.","Maintenez Fn pour voir le menu, puis appuyez sur T, E, P ou C. Glotty apparaît là où vous travaillez — même par-dessus une app en plein écran."],
     priv:["Confidentiel par conception","Pas de compte, pas de pub, pas d'analyse. Utilisez votre propre clé IA (OpenAI, DeepSeek, Grok, etc.) — votre texte va directement au fournisseur choisi, jamais par nos serveurs."],
     dl:"Télécharger pour macOS", dlmeta:"Universel (Apple Silicon et Intel) · macOS 15+ · gratuit",
+    whatsnew:"Nouveautés",
+    changelog:["Première version publique. Traduisez, expliquez, peaufinez et discutez sur tout texte sélectionné : traduction sur l'appareil, plus Apple Intelligence ou votre propre clé IA."],
     support:"Assistance", privacy:"Politique de confidentialité" },
 
   "de": { name:"Deutsch",
@@ -151,6 +178,8 @@ const I18N = {
     hud:["Ein Kürzel. Vier Wege zu lernen.","Halten Sie Fn für das Menü und drücken Sie T, E, P oder C. Glotty erscheint genau dort, wo Sie arbeiten — auch über einer Vollbild-App."],
     priv:["Privat by Design","Kein Konto, keine Werbung, keine Analyse. Nutzen Sie Ihren eigenen KI-Schlüssel (OpenAI, DeepSeek, Grok u. a.) — Ihr Text geht direkt an den gewählten Anbieter, nie über unsere Server."],
     dl:"Für macOS laden", dlmeta:"Universal (Apple Silicon & Intel) · macOS 15+ · kostenlos",
+    whatsnew:"Neuigkeiten",
+    changelog:["Erste öffentliche Version. Übersetze, erkläre, verfeinere und chatte zu jedem markierten Text — Übersetzung auf dem Gerät, plus Apple Intelligence oder dein eigener KI-Schlüssel."],
     support:"Support", privacy:"Datenschutzerklärung" }
 };
 
@@ -172,6 +201,12 @@ function render(lang){
   html += row("shots/hud."+lang+".png", x.hud[0], x.hud[1], false);
   html += `<section class="note"><h2>${esc(x.priv[0])}</h2><p>${esc(x.priv[1])}</p></section>`;
   document.getElementById("features").innerHTML = html;
+  let cl = `<h2>${esc(x.whatsnew)}</h2>`;
+  CHANGELOG.forEach((rel,i)=>{
+    const note = (x.changelog && x.changelog[i]) || "";
+    cl += `<div class="rel"><div class="ver">${esc(rel.v)}<span class="date">${esc(rel.date)}</span></div><div class="body">${esc(note)}</div></div>`;
+  });
+  document.getElementById("changelog").innerHTML = cl;
   document.getElementById("footer").innerHTML =
     `<a href="support.html">${esc(x.support)}</a> · <a href="privacy.html">${esc(x.privacy)}</a>`;
 }
