@@ -22,13 +22,14 @@
   .hero h1 { font-size: 44px; margin: 12px 0 6px; }
   .tagline { font-size: 23px; font-weight: 600; margin: 0 auto 10px; max-width: 640px; }
   .sub { font-size: 17px; color: #555; margin: 0 auto; max-width: 600px; }
-  .dl { display: inline-block; margin: 22px 0 6px; padding: 12px 30px; background: #2997ff;
+  .dlrow { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 22px 0 8px; }
+  .dl { display: inline-block; padding: 12px 30px; background: #2997ff;
         color: #fff; font-size: 18px; font-weight: 600; text-decoration: none; border-radius: 980px; }
   .dl:hover { background: #0a84ff; }
   .dlmeta { font-size: 14px; color: #86868b; margin: 0; }
-  .beta { display: inline-block; margin: 12px 0 0; padding: 12px 30px; background: #e8e8ed;
-          color: #1d1d1f; font-size: 18px; font-weight: 600; text-decoration: none; border-radius: 980px; }
-  .beta:hover { background: #dcdce1; }
+  .beta { display: inline-block; padding: 12px 30px; background: #b8860b;
+          color: #fff; font-size: 18px; font-weight: 600; text-decoration: none; border-radius: 980px; }
+  .beta:hover { background: #9a6b00; }
   .feat { display: flex; gap: 48px; align-items: center; margin: 72px 0; }
   .feat.reverse { flex-direction: row-reverse; }
   .feat .shot { flex: 0 0 44%; display: flex; justify-content: center; }
@@ -63,9 +64,11 @@
   <h1>Glotty</h1>
   <p class="tagline" id="tagline"></p>
   <p class="sub" id="sub"></p>
-  <a class="dl" id="dl" href="Glotty-1.0.pkg" download></a>
+  <div class="dlrow">
+    <a class="dl" id="dl" href="Glotty-1.0.pkg" download></a>
+    <a class="beta" id="beta" href="Glotty-1.0.1-beta.pkg" download></a>
+  </div>
   <p class="dlmeta" id="dlmeta"></p>
-  <a class="beta" id="beta" href="Glotty-1.0.1-beta.pkg" download></a>
 </header>
 <main id="features"></main>
 <footer id="footer"></footer>
