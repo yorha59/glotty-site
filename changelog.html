@@ -3,92 +3,128 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Glotty — What's New</title>
+<title>Glotty — Changelog</title>
 <style>
   :root { color-scheme: light; }
-  body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans", "Noto Sans CJK", sans-serif;
-         max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; color: #1d1d1f; }
-  h1 { font-size: 28px; margin-bottom: 4px; }
-  .meta { color: #86868b; font-size: 14px; margin-bottom: 28px; }
-  a { color: #2997ff; }
-  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .appicon { width: 56px; height: 56px; object-fit: contain; }
+  * { box-sizing: border-box; }
+  body { font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans", "Noto Sans CJK", sans-serif;
+         max-width: 760px; margin: 0 auto; padding: 16px 24px 80px; color: #1d1d1f; }
+  .topnav { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+  .topnav .brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px;
+                   color: #1d1d1f; text-decoration: none; }
+  .topnav .brand img { width: 26px; height: 26px; }
+  .topnav .navright { display: flex; align-items: center; gap: 18px; }
+  .topnav .navlink { color: #1d1d1f; text-decoration: none; font-weight: 500; }
+  .topnav .navlink:hover { color: #2997ff; }
   select { font: inherit; padding: 4px 8px; border-radius: 8px; }
-  .rel { display: flex; gap: 24px; padding: 22px 0; border-top: 1px solid #e3e3e6; }
-  .rel:first-of-type { border-top: none; }
-  .ver { flex: 0 0 96px; font-weight: 600; font-size: 18px; }
-  .ver .date { display: block; font-weight: 400; font-size: 13px; color: #86868b; margin-top: 3px; }
-  .body { color: #333; }
-  footer { margin-top: 48px; color: #86868b; font-size: 14px; border-top: 1px solid #8884; padding-top: 16px; }
+  h1 { font-size: 34px; text-align: center; margin: 28px 0 36px; }
+  .track { margin: 0 0 44px; }
+  .trackhead { font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+               color: #2997ff; margin: 0 0 6px; padding-bottom: 8px; border-bottom: 2px solid #e3e3e6; }
+  .trackhead.dev { color: #b8860b; }
+  .rel { display: flex; gap: 24px; padding: 18px 0; border-bottom: 1px solid #f0f0f2; }
+  .ver { flex: 0 0 124px; font-weight: 600; }
+  .ver .date { display: block; font-weight: 400; font-size: 13px; color: #86868b; margin-top: 2px; }
+  .ver .tag { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700; color: #9a6b00;
+              background: #fff3d6; padding: 1px 7px; border-radius: 6px; vertical-align: middle; }
+  .body { color: #444; }
+  footer { text-align: center; margin-top: 56px; color: #86868b; font-size: 15px;
+           border-top: 1px solid #e3e3e6; padding-top: 24px; }
+  footer a { color: #2997ff; text-decoration: none; margin: 0 8px; }
   @media (max-width: 600px) { .rel { flex-direction: column; gap: 6px; } }
 </style>
 </head>
 <body>
-<header class="topbar">
-  <img src="icon.png" alt="Glotty" class="appicon">
-  <select id="lang" aria-label="Language"></select>
-</header>
-<main id="content">
-  <h1>What's New</h1>
-  <p class="meta">Glotty release history</p>
-  <div class="rel"><div class="ver">1.0<span class="date">2026-06-09</span></div>
-    <div class="body">First public release. Translate, explain, polish, and chat on any text you
-    select — on-device translation, plus Apple Intelligence or your own AI key.</div></div>
-</main>
+<nav class="topnav">
+  <a class="brand" href="index.html"><img src="icon.png" alt="">Glotty</a>
+  <div class="navright">
+    <a class="navlink" id="nav-home" href="index.html"></a>
+    <select id="lang" aria-label="Language"></select>
+  </div>
+</nav>
+<h1 id="h1">Changelog</h1>
+<main id="content"></main>
+<footer id="footer"></footer>
 
 <script>
-// Release timeline — newest first. Dates are shared; notes are localized
-// via I18N[lang].notes[i] (same order). Each release: prepend a {v,date}
-// here and one note string to every language's `notes` array.
-const RELEASES = [{ v:"1.0", date:"2026-06-09" }];
+// Two tracks, newest first. Notes are localized via I18N[lang].officialNotes /
+// .devNotes (same index order). To log a release: prepend a {v,date} to the
+// right track and one note string to every language's matching notes array.
+const OFFICIAL = [{ v:"1.0", date:"2026-06-09" }];
+const DEV      = [{ v:"1.0.1-beta", date:"2026-06-10" }];
+
 const I18N = {
-  "en": { name:"English", title:"What's New", subtitle:"Glotty release history", home:"Home", privacy:"Privacy Policy",
-    notes:["First public release. Translate, explain, polish, and chat on any text you select — on-device translation, plus Apple Intelligence or your own AI key."] },
-  "zh-Hans": { name:"简体中文", title:"更新内容", subtitle:"Glotty 版本历史", home:"主页", privacy:"隐私政策",
-    notes:["首次公开发布。对任意选中的文本进行翻译、解释、润色与对话——本机翻译，并支持 Apple Intelligence 或你自己的 AI 密钥。"] },
-  "zh-Hant": { name:"繁體中文", title:"更新內容", subtitle:"Glotty 版本紀錄", home:"主頁", privacy:"隱私權政策",
-    notes:["首次公開發布。對任意選取的文字進行翻譯、解釋、潤飾與對話——本機翻譯，並支援 Apple Intelligence 或你自己的 AI 金鑰。"] },
-  "ja": { name:"日本語", title:"新着情報", subtitle:"Glotty のリリース履歴", home:"ホーム", privacy:"プライバシーポリシー",
-    notes:["初の一般公開リリース。選択したテキストを翻訳・解説・推敲・チャット——オンデバイス翻訳に加え、Apple Intelligence または自分の AI キーに対応。"] },
-  "ko": { name:"한국어", title:"새로운 기능", subtitle:"Glotty 릴리스 기록", home:"홈", privacy:"개인정보 처리방침",
-    notes:["첫 정식 출시. 선택한 텍스트를 번역·설명·다듬기·대화 — 온디바이스 번역과 Apple Intelligence 또는 직접 준비한 AI 키 지원."] },
-  "es": { name:"Español", title:"Novedades", subtitle:"Historial de versiones de Glotty", home:"Inicio", privacy:"Política de privacidad",
-    notes:["Primera versión pública. Traduce, explica, pule y chatea sobre cualquier texto seleccionado: traducción en el dispositivo, más Apple Intelligence o tu propia clave de IA."] },
-  "fr": { name:"Français", title:"Nouveautés", subtitle:"Historique des versions de Glotty", home:"Accueil", privacy:"Politique de confidentialité",
-    notes:["Première version publique. Traduisez, expliquez, peaufinez et discutez sur tout texte sélectionné : traduction sur l'appareil, plus Apple Intelligence ou votre propre clé IA."] },
-  "de": { name:"Deutsch", title:"Neuigkeiten", subtitle:"Glotty Versionsverlauf", home:"Startseite", privacy:"Datenschutzerklärung",
-    notes:["Erste öffentliche Version. Übersetze, erkläre, verfeinere und chatte zu jedem markierten Text — Übersetzung auf dem Gerät, plus Apple Intelligence oder dein eigener KI-Schlüssel."] }
+  "en": { name:"English", title:"Changelog", home:"Home", privacy:"Privacy Policy",
+    official:"Official", dev:"Dev preview",
+    officialNotes:["First public release. Translate, explain, polish, and chat on any text you select — on-device translation, plus Apple Intelligence or your own AI key."],
+    devNotes:["Adds Fn + R — spell-correct the selected word: a single suggestion is replaced in place; several show a pick-list to choose from."] },
+  "zh-Hans": { name:"简体中文", title:"更新日志", home:"主页", privacy:"隐私政策",
+    official:"正式版", dev:"开发预览版",
+    officialNotes:["首次公开发布。对任意选中的文本进行翻译、解释、润色与对话——本机翻译，并支持 Apple Intelligence 或你自己的 AI 密钥。"],
+    devNotes:["新增 Fn + R——校正所选单词的拼写：只有一个建议时就地替换，多个建议时显示候选列表供选择。"] },
+  "zh-Hant": { name:"繁體中文", title:"更新紀錄", home:"主頁", privacy:"隱私權政策",
+    official:"正式版", dev:"開發預覽版",
+    officialNotes:["首次公開發布。對任意選取的文字進行翻譯、解釋、潤飾與對話——本機翻譯，並支援 Apple Intelligence 或你自己的 AI 金鑰。"],
+    devNotes:["新增 Fn + R——校正所選單字的拼寫：只有一個建議時就地替換，多個建議時顯示候選清單供選擇。"] },
+  "ja": { name:"日本語", title:"変更履歴", home:"ホーム", privacy:"プライバシーポリシー",
+    official:"正式版", dev:"開発プレビュー",
+    officialNotes:["初の一般公開リリース。選択したテキストを翻訳・解説・推敲・チャット——オンデバイス翻訳に加え、Apple Intelligence または自分の AI キーに対応。"],
+    devNotes:["Fn + R を追加——選択した単語のスペルを修正。候補が1つなら即座に置換し、複数あれば候補リストから選べます。"] },
+  "ko": { name:"한국어", title:"변경 내역", home:"홈", privacy:"개인정보 처리방침",
+    official:"정식 버전", dev:"개발 미리보기",
+    officialNotes:["첫 정식 출시. 선택한 텍스트를 번역·설명·다듬기·대화 — 온디바이스 번역과 Apple Intelligence 또는 직접 준비한 AI 키 지원."],
+    devNotes:["Fn + R 추가 — 선택한 단어의 철자를 교정합니다. 제안이 하나면 바로 교체하고, 여러 개면 후보 목록에서 선택합니다."] },
+  "es": { name:"Español", title:"Registro de cambios", home:"Inicio", privacy:"Política de privacidad",
+    official:"Oficial", dev:"Versión de desarrollo",
+    officialNotes:["Primera versión pública. Traduce, explica, pule y chatea sobre cualquier texto seleccionado: traducción en el dispositivo, más Apple Intelligence o tu propia clave de IA."],
+    devNotes:["Añade Fn + R: corrige la ortografía de la palabra seleccionada. Una única sugerencia se reemplaza al instante; si hay varias, muestra una lista para elegir."] },
+  "fr": { name:"Français", title:"Journal des modifications", home:"Accueil", privacy:"Politique de confidentialité",
+    official:"Officielle", dev:"Aperçu de développement",
+    officialNotes:["Première version publique. Traduisez, expliquez, peaufinez et discutez sur tout texte sélectionné : traduction sur l'appareil, plus Apple Intelligence ou votre propre clé IA."],
+    devNotes:["Ajoute Fn + R : corrige l'orthographe du mot sélectionné. Une suggestion unique est remplacée sur place ; s'il y en a plusieurs, une liste de choix s'affiche."] },
+  "de": { name:"Deutsch", title:"Änderungen", home:"Startseite", privacy:"Datenschutzerklärung",
+    official:"Offiziell", dev:"Entwicklungsvorschau",
+    officialNotes:["Erste öffentliche Version. Übersetze, erkläre, verfeinere und chatte zu jedem markierten Text — Übersetzung auf dem Gerät, plus Apple Intelligence oder dein eigener KI-Schlüssel."],
+    devNotes:["Fügt Fn + R hinzu: korrigiert die Rechtschreibung des markierten Wortes. Ein einzelner Vorschlag wird direkt ersetzt; bei mehreren erscheint eine Auswahlliste."] }
 };
 
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function track(rels, notes, isDev){
+  return rels.map((r,i)=>{
+    const note = (notes && notes[i]) || "";
+    const tag = isDev ? ` <span class="tag">beta</span>` : "";
+    return `<div class="rel"><div class="ver">${esc(r.v)}${tag}<span class="date">${esc(r.date)}</span></div><div class="body">${esc(note)}</div></div>`;
+  }).join("");
+}
 function render(lang){
-  const t = I18N[lang] || I18N.en;
+  const x = I18N[lang] || I18N.en;
   document.documentElement.lang = lang;
-  document.title = t.title + " — Glotty";
-  let html = `<h1>${esc(t.title)}</h1><p class="meta">${esc(t.subtitle)}</p>`;
-  RELEASES.forEach((rel,i)=>{
-    const note = (t.notes && t.notes[i]) || "";
-    html += `<div class="rel"><div class="ver">${esc(rel.v)}<span class="date">${esc(rel.date)}</span></div><div class="body">${esc(note)}</div></div>`;
-  });
-  html += `<footer>© 2026 Glotty · <a href="index.html">${esc(t.home)}</a> · <a href="privacy.html">${esc(t.privacy)}</a></footer>`;
+  document.title = x.title + " — Glotty";
+  document.getElementById("h1").textContent = x.title;
+  document.getElementById("nav-home").textContent = x.home;
+  let html = "";
+  html += `<section class="track"><h2 class="trackhead">${esc(x.official)}</h2>${track(OFFICIAL, x.officialNotes, false)}</section>`;
+  html += `<section class="track"><h2 class="trackhead dev">${esc(x.dev)}</h2>${track(DEV, x.devNotes, true)}</section>`;
   document.getElementById("content").innerHTML = html;
+  document.getElementById("footer").innerHTML =
+    `© 2026 Glotty · <a href="index.html">${esc(x.home)}</a> · <a href="privacy.html">${esc(x.privacy)}</a>`;
 }
 function pickLang(){
   const saved = localStorage.getItem("glotty_lang");
   if (saved && I18N[saved]) return saved;
   for (const l of (navigator.languages || [navigator.language || "en"])){
     if (I18N[l]) return l;
-    const base = l.toLowerCase();
-    if (base.startsWith("zh")) return /tw|hk|hant|mo/.test(base) ? "zh-Hant" : "zh-Hans";
-    const short = base.split("-")[0];
-    if (I18N[short]) return short;
+    const b = l.toLowerCase();
+    if (b.startsWith("zh")) return /tw|hk|hant|mo/.test(b) ? "zh-Hant" : "zh-Hans";
+    const s = b.split("-")[0];
+    if (I18N[s]) return s;
   }
   return "en";
 }
 const sel = document.getElementById("lang");
 for (const code in I18N){ const o=document.createElement("option"); o.value=code; o.textContent=I18N[code].name; sel.appendChild(o); }
 let cur = pickLang(); sel.value = cur; render(cur);
-sel.addEventListener("change", () => { localStorage.setItem("glotty_lang", sel.value); render(sel.value); });
+sel.addEventListener("change", ()=>{ localStorage.setItem("glotty_lang", sel.value); render(sel.value); });
 </script>
 </body>
 </html>
